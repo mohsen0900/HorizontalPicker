@@ -1,20 +1,18 @@
 package com.github.jhonnyx2012.horizontalpicker;
 
-import org.joda.time.DateTime;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
  * Created by jhonn on 28/02/2017.
  */
 public class Day {
-    private DateTime date;
+    private final LocalDate date;
     private boolean selected;
-    private String monthPattern = "MMMM YYYY";
+    private String monthPattern = "MMMM yyyy";
 
-    public Day(DateTime date) {
+    public Day(LocalDate date) {
         this.date = date;
     }
 
@@ -23,25 +21,30 @@ public class Day {
     }
 
     public String getWeekDay() {
-        return date.toString("EEE", Locale.getDefault()).toUpperCase();
+        return date.format(
+                DateTimeFormatter.ofPattern("EEE", Locale.getDefault())
+        ).toUpperCase();
     }
 
-    public String getMonth() { return getMonth(""); }
+    public String getMonth() {
+        return getMonth("");
+    }
 
     public String getMonth(String pattern) {
         if (!pattern.isEmpty())
             this.monthPattern = pattern;
 
-        return date.toString(monthPattern, Locale.getDefault());
+        return date.format(
+                DateTimeFormatter.ofPattern(monthPattern, Locale.getDefault())
+        );
     }
 
-    public DateTime getDate() {
-        return date.withTime(0,0,0,0);
+    public LocalDate getDate() {
+        return date;
     }
 
     public boolean isToday() {
-        DateTime today=new DateTime().withTime(0,0,0,0);
-        return getDate().getMillis()==today.getMillis();
+        return date.equals(LocalDate.now());
     }
 
     public void setSelected(boolean selected) {
@@ -51,5 +54,4 @@ public class Day {
     public boolean isSelected() {
         return selected;
     }
-
 }

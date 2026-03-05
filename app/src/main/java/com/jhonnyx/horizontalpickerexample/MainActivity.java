@@ -7,7 +7,7 @@ import android.util.Log;
 import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
 import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
 
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 
 public class MainActivity extends AppCompatActivity implements DatePickerListener {
 
@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity implements DatePickerListene
                 .showTodayButton(false)
                 .init();
         picker.setBackgroundColor(Color.LTGRAY);
-        picker.setDate(new DateTime());
+        picker.setDate(LocalDate.now());
     }
 
     @Override
-    public void onDateSelected(DateTime dateSelected) {
+    public void onDateSelected(LocalDate dateSelected) {
         Log.i("HorizontalPicker","Fecha seleccionada="+dateSelected.toString());
     }
 }

@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Created by Jhonny Barrios on 22/02/2017.
@@ -112,7 +112,7 @@ public class HorizontalPickerRecyclerView extends RecyclerView implements OnItem
 
     @Override
     public void onClick(View v) {
-        setDate(new DateTime());
+        setDate(LocalDate.now());
     }
 
     @Override
@@ -127,10 +127,10 @@ public class HorizontalPickerRecyclerView extends RecyclerView implements OnItem
         });
     }
 
-    public void setDate(DateTime date) {
-        DateTime today = new DateTime().withTime(0,0,0,0);
-        int difference = Days.daysBetween(date,today).getDays() * (date.getYear() < today.getMillis() ? -1 : 1);
-        smoothScrollToPosition(offset+difference);
+    public void setDate(LocalDate date) {
+        LocalDate today = LocalDate.now();
+        int difference = (int) ChronoUnit.DAYS.between(date, today) * (date.getYear() < today.getYear() ? -1 : 1);
+        smoothScrollToPosition(offset + difference);
     }
 
     private static class CenterSmoothScroller extends LinearSmoothScroller {

@@ -12,8 +12,9 @@ import android.widget.TextView;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.joda.time.DateTime;
-
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 /**
@@ -38,7 +39,11 @@ public class HorizontalPickerAdapter extends RecyclerView.Adapter<HorizontalPick
         items=new ArrayList<>();
         this.itemWidth=itemWidth;
         this.listener=listener;
-        generateDays(daysToCreate,new DateTime().minusDays(offset).getMillis(),false);
+        generateDays(daysToCreate, LocalDate.now()
+                .minusDays(offset)
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli(),false);
         this.mBackgroundColor=mBackgroundColor;
         this.mDateSelectedTextColor=mDateSelectedTextColor;
         this.mDateSelectedColor=mDateSelectedColor;
@@ -54,7 +59,9 @@ public class HorizontalPickerAdapter extends RecyclerView.Adapter<HorizontalPick
         int i=0;
         while(i<n)
         {
-            DateTime actualDate = new DateTime(initialDate + (DAY_MILLIS * i++));
+            LocalDate actualDate = Instant.ofEpochMilli(initialDate + (DAY_MILLIS * i++))
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
             items.add(new Day(actualDate));
         }
     }
